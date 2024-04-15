@@ -104,6 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "users.User"
 LOGIN_URL = '/singin/'
 
+ALLOWED_HOSTS = ['localhost','django-project-manager-production.up.railway.app']
 SESSION_COOKIE_SECURE = False
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
