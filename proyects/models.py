@@ -36,7 +36,6 @@ class Task(models.Model):
     #La tarea es asginada a un usuario especifico, el related name hace que desde el modelo con el que se relacione
     #pueda acceder a ese campo con el related_name que le coloco, es una relacion inversa
     completed = models.BooleanField(default=False, verbose_name="Completa")
-    important = models.BooleanField(default=False,verbose_name="Importancia de la tarea")
     datecompleted = models.DateTimeField(null=True,blank=True, verbose_name="Completa el")
 
     asigned_at = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='tareas_asignadas')

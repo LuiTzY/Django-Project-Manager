@@ -77,9 +77,8 @@ def getProyect(request,project_id):
     members = Member.objects.filter(proyect = proyect)
     members_names = [(member.user.first_name) for member in members]
     completed_tasks = Task.objects.filter(proyect = proyect, completed=True)
-    important_tasks = Task.objects.filter(proyect=proyect, important=True)
     ProyectHistorial.objects.create(action=f"{user} ha consultado el proyecto")
-    return render(request, "proyect/proyect.html", {"proyect":proyect,"members":members,"tasks":proyect.tareas.all(),"completed_tasks":completed_tasks,"important_tasks":important_tasks,"members_names":members_names})
+    return render(request, "proyect/proyect.html", {"proyect":proyect,"members":members,"tasks":proyect.tareas.all(),"completed_tasks":completed_tasks,"members_names":members_names})
 
 @login_required
 def updateProyect(request, project_id):
@@ -124,12 +123,11 @@ def createTask(request,project_id):
                member = Member.objects.get(id=int(task_asigned_at))
                task_title = task.cleaned_data['title']
                task_description = task.cleaned_data['description'] 
-               task_important = task.cleaned_data['important']
                #Se crear una instacia para una tarea nueva, con los datos tomados del formulario enviado 
-               Task.objects.create(asigned_at=member, proyect=proyect, title=task_title,description=task_description, important=task_important)
+               Task.objects.create(asigned_at=member, proyect=proyect, title=task_title,description=task_description)
                ProyectHistorial.objects.create(action=f"{request.user.id} creo una tarea en el proyecto {proyect.project_name}")
                messages.success(request,"Se ha creado tu tarea correctamente")
-               return render(request, "tasks/tasks.html")
+               return redirect("tasks",project_id)
            else:
                 ProyectHistorial.objects.create(action=f"{request.user.id} intento crear una tarea en el proyecto {proyect.project_name}, pero ocurrio un error")
                 messages.error(request,"No se ha podido crear tu tarea, intentalo de nuevo")

@@ -1,4 +1,4 @@
-from django import forms
+from django import forms # type: ignore
 from .models import Proyect,Task,Member,User
 
 class ProjectForm(forms.ModelForm):
@@ -84,16 +84,11 @@ class TaskCreateForm(forms.ModelForm):
             proyect_id = kwargs['instance'].id
             members_proyect_available = Member.objects.filter(proyect__id=proyect_id)
             list(members_proyect_available)
-            #print(f"MEIMBEROS {members_proyect_available}")
             if members_proyect_available is not None:
-                print([(member.id, member.user.first_name) for member in members_proyect_available])
                 self.fields['asigned_at'].choices = [(member.id, member.user.first_name) for member in members_proyect_available]
                 
     def save(self, *args, **kwargs):
-        # Verifica si el parámetro 'from_form' está presente y es True
-            # El método save() se llamó desde el formulario
-
-        # Llama al método save() original del modelo
+     
             super().save(*args, **kwargs)
             
     asigned_at = forms.TypedChoiceField(
@@ -115,12 +110,9 @@ class UpdateTaskForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if 'instance' in kwargs:
             proyect_id = kwargs['instance'].proyect.id
-            print(f"IDE EL POYRE {proyect_id}")
             members_proyect_available = Member.objects.filter(proyect__id=proyect_id)
             list(members_proyect_available)
-            #print(f"MEIMBEROS {members_proyect_available}")
             if members_proyect_available is not None:
-                print([(member.id, member.user.first_name) for member in members_proyect_available])
                 self.fields['asigned_at'].choices = [(member.id, member.user.first_name) for member in members_proyect_available]
                 
     def clean_asigned_at(self):
@@ -132,10 +124,7 @@ class UpdateTaskForm(forms.ModelForm):
             raise forms.ValidationError("No se puede asignar la tarea a un miembro inexistente.")
         
     def save(self, *args, **kwargs):
-        # Verifica si el parámetro 'from_form' está presente y es True
-            # El método save() se llamó desde el formulario
-
-        # Llama al método save() original del modelo
+  
             super().save(*args, **kwargs)
             
     asigned_at = forms.TypedChoiceField(
