@@ -1,7 +1,7 @@
 {%extends 'layout.html' %}
 
 {%block body%}
-<h2 class="text-center mb-5">Tus proyectos</h2>
+<h2 class="text-center mb-5"><strong>Proyectos en los que eres miembro</strong></h2>
 {% if messages %}
     {% for message in messages %}
         {%if message.tags == 'success' %}
@@ -17,29 +17,29 @@
         {%endif%}
     {% endfor %}
     {% endif %}
-{% if proyectos|length >= 1%}
+{% if members_proyect|length >= 1%}
     <div class="row">
-        {% for proyecto in proyectos %}
+        {% for member in members_proyect %}
             <div class="col-lg-4">
                 <div class="card card-margin">
                     <div class="card-body pt-0">
                         <div class="widget-49">
                             <div class="widget-49-title-wrapper mt-3">
                                 <div class="widget-49-date-primary">
-                                    <span class="widget-49-date-day">{{ proyecto.created_at|date:"F" }}</span>
-                                    <span class="widget-49-date-month">{{proyecto.created_at.day}}</span>
+                                    <span class="widget-49-date-day">{{ member.proyect.created_at|date:"F" }}</span>
+                                    <span class="widget-49-date-month">{{member.proyect.created_at.day}}</span>
                                 </div>
                                 <div class="widget-49-meeting-info">
-                                    <span class="widget-49-pro-title">{{proyecto.project_name}}</span>
-                                    <span class="widget-49-meeting-time" style="color: black;">{{proyecto.project_owner.first_name  }}</span>
+                                    <span class="widget-49-pro-title">{{member.proyect.project_name}}</span>
+                                    <span class="widget-49-meeting-time" style="color: black;">{{member.proyect.project_owner.first_name  }}</span>
                                 </div>
                             </div>
                             <ol class="widget-49-meeting-points">
-                                <li class="widget-49-meeting-item"><span>{{proyecto.project_description}}</span></li>
+                                <li class="widget-49-meeting-item"><span>{{member.proyect.project_description}}</span></li>
                         
                             </ol>
                             <div class="widget-49-meeting-action">
-                                <a href="{% url 'proyect' proyecto.id%}" class="btn btn-sm btn-flash-border-primary">Ver Proyecto</a>
+                                <a href="{% url 'proyect' member.proyect.id%}" class="btn btn-sm btn-flash-border-primary">Ver Proyecto</a>
                             </div>
                         </div>
                     </div>
@@ -49,13 +49,8 @@
         {% endfor %}
     </div>
 {%else%}
-<div class="alert alert-primary d-flex align-items-center" role="alert">
-    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-    <div>
-        Actualmente no tienes proyectos creados
-        <a class="btn btn-outline-primary" href="/create-proyect/">Crear proyectos</a>
-    </div>
-  </div>
+<h2 class="mb-3">Actualmete no has sido agregado a otros proyectos </h2>
+<a class="btn btn-outline-primary" href="{%url 'profile' %}">Ir a perfil</a>
 {%endif%}
 
 

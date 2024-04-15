@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('create-proyect/', views.register_proyect, name="create-proyect"),
     path('proyects/', views.getProyects, name="proyects"),
+    path('proyects-member/', views.proyects_member, name="proyects-member"),
     path('proyect/<project_id>/', views.getProyect, name="proyect"),
     path('update-proyect/<project_id>/', views.updateProyect, name="edit-proyect"),
     

@@ -71,6 +71,11 @@ def getProyects(request):
     return render(request, "proyect/proyects.html", {"proyectos": proyectos_creados})
 
 @login_required
+def proyects_member(request):
+    members_proyect = Member.objects.filter(user__id= request.user.id)
+    return render(request, "member/proyects-member.html", {"members_proyect": members_proyect})
+
+@login_required
 def getProyect(request,project_id):
     user  = request.user
     proyect = Proyect.objects.get(project_owner=user, id=project_id)

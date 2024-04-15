@@ -22,6 +22,7 @@ def singup(request):
         #Recoger datos del formulario
         userForm = UserForm(request.POST)
         if userForm.is_valid():
+            print(userForm.cleaned_data)
             try:
                 userForm.save()
             except IntegrityError:
@@ -48,6 +49,7 @@ def singin(request):
     else:
         email = request.POST['email']
         password = request.POST['password']
+        print(f"Usuario creado {email} {password}\n")
         user = authenticate(request,email=email,password=password)   
         
         if user is None:

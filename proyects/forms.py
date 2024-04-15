@@ -58,7 +58,6 @@ class ProjectMembersForm(forms.ModelForm):
             
             excluded_users = [user_id for user_id in excluded_users if user_id  in members_in_proyect]
             
-            excluded_users.append(proyect_owner.id)  # Excluye al creador del proyecto
             users = User.objects.exclude(id__in=excluded_users)
             self.fields['user'].choices = [(user.id, user.first_name) for user in users]
     user = forms.TypedChoiceField(

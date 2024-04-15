@@ -56,11 +56,17 @@
             <div class="card-body">
                 {% if is_owner%}
 
-                    {% if member.is_admin %}
-                        <h5 class="card-title text-primary">Miembro Administrador</h5>
+                {% if member.user.id == member.proyect.project_owner.id %}
+                        <h5 class="card-title text-primary">Creador del proyecto</h5>
                         <div class="alert alert-info" role="alert">
-                            Nota: Este miembro es un administrador del proyecto.
+                            Nota: Este es el creador del proyecto.
                         </div>
+
+                    {% elif member.is_admin %}
+                    <h5 class="card-title text-primary">Miembro Administrador</h5>
+                    <div class="alert alert-info" role="alert">
+                        Nota: Este miembro es un administrador del proyecto.
+                    </div>
                     {% else %}
                         <h5 class="card-title">Miembro Regular</h5>
                         <div class="alert alert-info" role="alert">
@@ -77,7 +83,13 @@
                     <a href="{% url 'create-task' member.proyect.id  %}" class="btn btn-warning">Asignar Tarea</a>
                 {%elif member_is_admin%}
 
-                    {% if member.is_admin %}
+                    {% if member.user.id == member.proyect.project_owner.id %}
+                        <h5 class="card-title text-primary">Creador del proyecto</h5>
+                        <div class="alert alert-info" role="alert">
+                            Nota: Este es el creador del proyecto.
+                        </div>
+
+                    {% elif member.is_admin %}
                         <h5 class="card-title text-primary">Miembro Administrador</h5>
                         <div class="alert alert-info" role="alert">
                             Nota: Este miembro es un administrador del proyecto.

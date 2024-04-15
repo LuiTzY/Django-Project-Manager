@@ -27,6 +27,7 @@
                 <li class="list-group-item"><strong>Nombre del miembro:</strong> {{ member.user.first_name }}</li>
                 <li class="list-group-item"><strong>Apellidos del miembro:</strong> {{ member.user.last_name }}</li>
                 <li class="list-group-item"><strong>Estado de actividad:</strong> Conectado hace {{ member.user.last_login }}</li>
+                <li class="list-group-item"><strong>Se agrego al proyecto</strong> {{ member.joined_at }}</li>
                 <li class="list-group-item">
                     {% if member.is_admin %}
                         <span style="color: black;">Rol:</span><strong style="color: blue;"> Administrador</strong>
