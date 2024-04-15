@@ -34,7 +34,7 @@ def singup(request):
                 password = userForm.cleaned_data['password1']
                 user = authenticate(request, username=email, password=password)
                 login(request, user)
-                return redirect("profile")
+                return redirect("home")
         else:
             
             print("Errores en el formularios ", userForm.errors)
@@ -59,7 +59,7 @@ def singin(request):
         login(request,user)
         
         messages.success(request, '¡Has iniciado sesion correctamente!')
-        return redirect("profile")
+        return redirect("home")
         
 #View para cerrar sesion del usuario
 @login_required
