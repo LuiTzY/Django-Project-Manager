@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "users.User"
 LOGIN_URL = '/singin/'
 
-ALLOWED_HOSTS = ['localhost','django-project-manager-production.up.railway.app']
+ALLOWED_HOSTS = ['*']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 CSRF_TRUSTED_ORIGINS =['https://django-project-manager-production.up.railway.app']
