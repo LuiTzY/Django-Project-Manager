@@ -176,11 +176,12 @@ def complete_task(request,task_id,project_id):
 @login_required
 def getTasks(request, project_id):
     proyect = Proyect.objects.get(id=project_id)
+    members = Member.objects.filter(proyect=proyect)
     if proyect is not None:
         tasks = proyect.tareas.all()
         if request.method == "GET":
             ProyectHistorial.objects.create(action=f"{request.user.id} consulto todas las tarea en el proyecto {proyect.project_name}")
-            return render(request, "tasks/tasks.html", {"tasks":tasks, "proyect":proyect})
+            return render(request, "tasks/tasks.html", {"tasks":tasks, "proyect":proyect, "members":members})
     else:
         messages.error(request,"El proyecto no existe")
         return redirect('profile')
@@ -263,8 +264,12 @@ def listAllMembers(request, project_id):
 
 @login_required
 def member_detail(request, project_id, member_id):
+    proyect = Proyect.objects.get(id=project_id)
     #Miembro a mostrar informacion
-    member = Member.objects.get(user_id = member_id, proyect_id = project_id)
+    try:
+        member = Member.objects.get(user_id = member_id, proyect_id = project_id)
+    except ObjectDoesNotExist:
+        return render(request, "member/404-members.html",{"message":"Lo sentimos, pero este miembro no existe en tu proyecto","proyect":proyect})
     #Se obtienen todos los miembros para verificar roles
     members = Member.objects.filter(proyect=project_id)
     admin_members_list = [(member.user.id) for member in members]
@@ -325,7 +330,7 @@ def delete_member(request, project_id, member_id):
     member_name = member.user.first_name
     if member is not None:
         member.delete()
-        messages.success(f"Se ha eliminado correctamente el miembro {member_name} de tu proyecto")
+        messages.success(request,f"Se ha eliminado correctamente el miembro {member_name} de tu proyecto")
         ProyectHistorial.objects.create(action=f"{request.user.id} solicito eliminar el miembro {member.user.first_name} del proyecto {member.proyect.project_name}")
         ProyectHistorial.objects.create(action=f"{request.user.id} elimino el miembro {member.user.first_name} del proyecto {member.proyect.project_name}")
         return redirect("proyect-members",project_id)

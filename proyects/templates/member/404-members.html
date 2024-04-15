@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+
+{%block body%}
+    <h1 class="mb-3">{{message}}</h1>
+    <a href="{%url 'proyect-members' proyect.id %}" class="btn btn-primary">Ver miembros</a>
+    <a href="{%url 'proyect' proyect.id %}" class="btn btn-outline-primary">Ver mi proyecto</a>
+{%endblock%}

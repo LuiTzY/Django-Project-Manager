@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>Miembros del proyecto {{ proyect.project_name }}</h1>
+    <h1>Miembros del proyecto: <strong>{{ proyect.project_name }}</strong></h1>
     
         {%if is_owner%}
 
@@ -24,6 +24,23 @@
         {%endif%}
 
 <div class="row">
+    {% if messages %}
+                                   
+            
+                {% for message in messages %}
+                    {%if message.tags == 'success' %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong> {{ message }} </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {%else%}
+                    <div class="alert alert-warning  alert-dismissible fade show" role="alert">
+                        <strong> {{ message }} </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {%endif%}
+                {% endfor %}
+            {%endif%}
     {%if members|length == 0%}
     <div class="container">
         <div class="w-40">
@@ -57,7 +74,7 @@
                         </p>
                     <a href="{% url 'member-detail' member.proyect.id member.user.id %}" class="btn btn-primary">Ver miembro</a>
                     <a href="{% url 'delete-member' member.proyect.id member.user.id %}" class="btn btn-danger">Eliminar Miembro</a>
-
+                    <a href="{% url 'create-task' member.proyect.id  %}" class="btn btn-warning">Asignar Tarea</a>
                 {%elif member_is_admin%}
 
                     {% if member.is_admin %}
@@ -78,6 +95,8 @@
                     </p>
 
                     <a href="{% url 'member-detail' member.proyect.id member.user.id %}" class="btn btn-primary">Ver miembro</a>
+                    <a href="{% url 'create-task' member.proyect.id  %}" class="btn btn-warning">Asignar Tarea</a>
+
                 {%else%}
                             
                     {% if member.is_admin %}
