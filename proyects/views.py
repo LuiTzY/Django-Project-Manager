@@ -112,9 +112,10 @@ def updateProyect(request, project_id):
 @login_required
 def createTask(request,project_id):
    proyect = Proyect.objects.get(id=project_id)
+   members = Member.objects.filter(proyect=proyect)
    if proyect is not None:
        if request.method == "GET":
-            return render(request, "tasks/create-task.html", {"form":TaskCreateForm(instance=proyect)})
+            return render(request, "tasks/create-task.html", {"form":TaskCreateForm(instance=proyect),"proyect":proyect,"members":members})
        else:
            task = TaskCreateForm(request.POST,instance=proyect)      
            if task.is_valid():
