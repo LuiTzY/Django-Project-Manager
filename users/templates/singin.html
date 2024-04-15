@@ -1,0 +1,38 @@
+
+{%extends 'singup.html'%}
+
+{%block form-body%}
+    <form method="post"  class="card card-body mt-5">
+    
+        {% if messages %}
+            {% for message in messages %}
+                {%if message.tags == 'success' %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong> {{ message }} </strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%else%}
+                <div class="alert alert-warning  alert-dismissible fade show" role="alert">
+                    <strong> {{ message }} </strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%endif%}
+            {% endfor %}
+        {%endif%}
+        <h2>Inicia sesion</h2>
+
+        {%csrf_token%}
+        <div class="mb-3 form-group">
+            <label for="email">Correo Electronico:</label><br>
+            {{form.email}}
+        </div>
+        <div class="mb-3 form-group">
+            <label for="password">Contraseña:</label><br>
+            {{form.password}}
+        </div>
+       
+        <div class="mb-3 form-group">
+            <input type="submit" value="Inicia Sesion" class="btn btn-primary">            
+        </div>
+    </form>
+{%endblock%}

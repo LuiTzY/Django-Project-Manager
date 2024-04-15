@@ -1,0 +1,59 @@
+{%extends 'layout.html'%}
+
+{%block body %}
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        {%if message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong> {{ message }} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%else%}
+        <div class="alert alert-danger  alert-dismissible fade show" role="alert">
+            <strong> {{ message }} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endif%}
+    {% endfor %}
+  {% endif %}
+    <div class="card">
+       
+        <div class="card-body">
+            <p class="card-text">
+                <h3>{{ member.user.first_name }} fue unido al proyecto {{ member.joined_at }}</h3>
+            </p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Nombre del miembro:</strong> {{ member.user.first_name }}</li>
+                <li class="list-group-item"><strong>Apellidos del miembro:</strong> {{ member.user.last_name }}</li>
+                <li class="list-group-item"><strong>Estado de actividad:</strong> Conectado hace {{ member.user.last_login }}</li>
+                <li class="list-group-item">
+                    {% if member.is_admin %}
+                        <span style="color: black;">Rol:</span><strong style="color: blue;"> Administrador</strong>
+                    {% else %}
+                    <span style="color: black;">Rol:</span><strong style="color: red;"> Administrador</strong>
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <strong>Tareas asignadas:</strong> {{ member_tasks }}
+                </li>
+            </ul>
+            <div class="card-body">
+                {%if is_owner%}
+                    <a href="{% url 'delete-member' member.proyect.id member.user.id %}" class="btn btn-danger">Eliminar</a>
+                    <a href="{% url 'proyect-members' member.proyect.id %}" class="btn btn-primary">Ver miembros del proyecto</a>
+                {%elif member_is_admin%}
+                    <a href="{% url 'proyect-members' member.proyect.id %}" class="btn btn-primary">Ver miembros del proyecto</a>
+                {%endif%}
+                {%if member.is_admin%}
+                    <a href="{% url 'update-member-rol' member.proyect.id member.user.id %}" class="btn btn-warning">Cambiar Rol a Miembro regular</a>
+                {%else%}
+                    <a href="{% url 'update-member-rol' member.proyect.id member.user.id %}" class="btn btn-warning">Cambiar Rol a Administrador</a>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+{%endblock%}

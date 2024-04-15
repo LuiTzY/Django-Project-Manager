@@ -1,0 +1,111 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <!-- <h2>Bienvenido a tu proyecto {{ request.user.first_name }}</h2>
+    <h3>Este es tu proyecto</h3>
+    <div>
+        {{ proyect }}
+    </div>
+    <a href="/create-task/2">Crear tarea</a>     -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="container bootdey flex-grow-1 container-p-y">
+    {% if messages %}
+                                   
+        {% for message in messages %}
+            {%if message.tags == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong> {{ message }} </strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {%else%}
+            <div class="alert alert-warning  alert-dismissible fade show" role="alert">
+                <strong> {{ message }} </strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {%endif%}
+        {% endfor %}
+    {%endif%}
+            <div class="card mb-4">
+              <div class="card-body">
+                <table class="table user-view-table m-0">
+                  <tbody>
+                    <tr>
+                      <td>Nombre del proyecto</td>
+                      <td>{{proyect.project_name}}</td>
+                    </tr>
+                    <tr>
+                      <td>Creado por:</td>
+                      <td>{{proyect.project_owner.first_name}}</td>
+                    </tr>
+                    <tr>
+                      <td>Miembros:</td>
+                      {%if members|length == 0 %}
+                      <td><span class="bi bi-x-lg text-warning"></span>&nbsp; </td>
+                      {%else%}
+                      <td><span class="fa fa-check text-success"></span>&nbsp;</td>
+
+                      {%endif%}
+                    </tr>
+                    <tr>
+                      <td>Cantidad de Miembros en el proyecto:</td>
+                      <td>{{members|length}}</td>
+                    </tr>
+                    <tr>
+                      <td>Miembros en el proyecto:</td>
+                      {%for member in members_names%}
+                      <td>{{member.user.first_name}}</td>
+                      {%endfor%}
+                    </tr>
+                    <tr>
+                      <td>Fecha de creación:</td>
+                      <td><span class="badge badge-outline-success"></span>{{proyect.created_at}}</td>
+                    </tr>
+                    <tr>
+                        <td>Permisos de Miembros:</td>
+                        <td>Miembro y Admin</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+           
+            </div>
+            <div class="w-30 mt-5 mb-5">
+                <a class="btn btn-outline-primary" href="{% url 'edit-proyect' proyect.id%}">Editar proyecto</a>
+            </div>
+            
+            <div class="card">
+
+              <h2 class="mt-3">Tareas</h2>
+
+              <div class="row no-gutters row-bordered">
+                <div class="d-flex col-md align-items-center">
+                  <span href="#" class="card-body d-block text-body">
+                    <div class="text-muted small line-height-1">Total de Tareas</div>
+                    <div class="text-xlarge">{{tasks|length}}</div>
+                  </span>
+                </div>
+
+                <div class="d-flex col-md align-items-center">
+                  <span href="#" class="card-body d-block text-body">
+                    <div class="text-muted small line-height-1">Tareas Completas</div>
+                    <div class="text-xlarge">{{completed_tasks|length}}</div>
+                  </span>
+                </div>
+                <div class="d-flex col-md align-items-center">
+                  <span href="#" class="card-body d-block text-body">
+                    <div class="text-muted small line-height-1">Tareas Importantes</div>
+                    <div class="text-xlarge">{{important_tasks|length}}</div>
+                  </span>
+                </div>
+              </div>
+              
+          </div>
+          <div class="btn-group mt-3 " role="group" aria-label="Button group">
+            <button type="button" class="btn btn-primary mx-4"><a class="text-white" href="/tasks/{{proyect.id}}/">Ver tareas</a></button>
+            <button type="button" class="btn btn-secondary mx-4"><a class="text-white" href="/create-task/{{proyect.id}}/">Crear Tarea</a></button>
+            <button type="button" class="btn btn-info mx-4"><a class="text-white" href="/list-members/{{proyect.id}}/">Ver Miembros</a></button>
+            <button type="button" class="btn btn-success"><a class="text-white" href="/add-member/{{proyect.id}}/">Agrega un Miembro</a></button>
+
+          </div>
+    
+{% endblock %}

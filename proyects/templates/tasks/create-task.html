@@ -1,0 +1,33 @@
+{%extends 'layout.html' %}
+
+{%block body%}
+
+<div class="container">
+    <form method="post">
+        {%csrf_token%}
+        <div class="form-group">
+          <label class="form-label">Titulo de la tarea</label>
+          {{form.title}}
+        </div>
+        
+        <div class="form-group mt-3">
+            <label class="form-label">Descripcion de la tarea</label>
+            {{form.description}}
+        </div>
+
+        <div class="form-group mt-3">
+          <label>La tarea sera asignada a:</label>
+          <select class="form-control" id="id_asigned_at" name="asigned_at">
+            {% for value, label in form.fields.asigned_at.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+        
+        </div>
+       
+        <input type="submit" class="btn btn-outline-primary mt-3" value="Crear Tarea">
+
+    </form>
+</div>
+
+{%endblock%}

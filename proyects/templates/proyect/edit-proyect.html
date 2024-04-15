@@ -1,0 +1,26 @@
+
+{%extends 'layout.html'%}
+
+{%block body%}
+    <form method="post" class="card card-body mt-5">
+        <h2 class="mb-3">Actualiza tu proyecto</h2>
+
+        {%csrf_token%}
+        <div class="mb-3 form-group">
+            <label for="project_name" class="form-label">Nombre del proyecto</label>
+            {{form.project_name}}
+        </div>
+        <div class="mb-3 form-group">
+            <label for="project_description" class="form-label">Descripción del proyecto</label>
+            {{form.project_description}}
+        </div>
+        <div class="mb-3 form-group">
+            <label for="proyect_objetive" class="form-label">Objetivo del proyecto</label>
+            {{form.proyect_objetive}}
+        </div>
+        
+        <div class="mb-3 form-group">
+            <input type="submit" value="Actualizar proyecto" class="btn btn-primary">            
+        </div>
+    </form>
+{%endblock%}

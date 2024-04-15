@@ -1,0 +1,132 @@
+{%extends 'layout.html' %}
+{%block body%}
+
+
+<div class="container">
+    <div class="main-body">
+    
+        
+          <div class="row gutters-sm">
+            
+            
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Nombre:</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{user.first_name}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Apellidos</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{user.last_name}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Correo electrónico</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{user.email}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Te uniste:</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{user.created_at}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Mis Proyectos </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        +{{proyects|length}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Otros Proyectos </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        +{{proyect_members|length}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-primary "  href="{% url 'edit-account'%}">Editar Cuenta</a>
+                      <a class="btn btn-danger delete " target="__blank" href="{% url 'delete-account'%}">Eliminar Cuenta</a>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+
+              <div class="row gutters-sm">
+                <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      
+                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"></i>Proyectos</h6>
+                      {%if proyects|length == 0 %}
+                      <div class="row">
+                        <span class="mb-2">Aun no tienes proyectos para ver, crea uno.</span>
+                        <div class="col-sm-12">
+                          <a class="btn btn-primary "  href="{% url 'create-proyect'%}">Crear un proyecto</a>
+                        </div>
+                      </div>
+                      {%else%}
+                      {%for proyect in proyects%}
+                        <small><a href="{% url 'proyect' proyect.id%}" class="text-black">{{proyect.project_name}}</a></small>
+                        <div class="progress mb-3" style="height: 5px">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      {%endfor%}
+                      {%endif%}
+
+                     
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+        </div>
+
+    <script>
+    const btnDelete = document.querySelectorAll('.delete')
+        console.log(btnDelete)
+        if(btnDelete){
+            const btnArr = Array.from(btnDelete)
+            btnArr.forEach((btn)=>{
+                btn.addEventListener(('click'), (e)=>{
+                    if(!confirm("Estas seguro de que quieres eliminar tu cuenta? ")){
+                        e.preventDefault(); 
+                    }
+                })
+            })
+        }
+
+</script>
+{%endblock%}

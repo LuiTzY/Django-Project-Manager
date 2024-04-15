@@ -1,0 +1,51 @@
+{%extends 'layout.html' %}
+{%block body%}
+<div class="card">
+    {%if admin%}
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      <strong>Nota:</strong> Eres administrador del proyecto, puedes eliminar, y editar tareas.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%else%}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <strong>Nota:</strong> No eres administrador del proyecto, solo completar tareas.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {%endif%}
+    <div class="card-body">
+      <h5 class="card-title">{{ task.title }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">La tarea ha sido asignada a: {{ task.asigned_at.user.first_name }}</h6>
+      <h6 class="card-subtitle mb-2 text-muted">Asginada el: {{ task.created_at }}</h6>
+      <p class="card-text">{{ task.description }}</p>
+      
+      
+      {%if admin%}
+     
+        <a href="{% url 'delete-task' task.id %}" class="btn btn-danger">Eliminar</a>
+        <a href="{% url 'edit-task' task.id task.proyect.id %}" class="btn btn-primary">Editar</a>
+        <br>
+        {%if task.completed%}    
+        <div class="mt-3">
+          <span class="text-success">Esta tarea ya ha sido completada el: <span class="text-black">{{task.datecompleted|date:"D d M Y"}}</span></span>
+        </div>    
+        {%else%}
+          <form action="{% url 'complete-task' task.id task.proyect.id %}" method="post">
+            {%csrf_token%}
+            <input type="submit" value="Completar tarea" class="btn btn-info">
+          </form>        
+      {%endif%}
+      {%else%}
+          {%if task.completed%}
+          <span class="text-success">Esta tarea ya ha sido completada el: <span class="text-black">{{task.datecompleted|date:"D d M Y"}}</span></span>
+          {%else%}
+          <form action="{% url 'complete-task' task.id task.proyect.id %}" method="post">
+            {%csrf_token%}
+            <input type="submit" value="Completar tarea" class="btn btn-info">
+          </form>   
+          {%endif%}
+      {%endif%}
+      
+    </div>
+  </div>
+
+{%endblock%}

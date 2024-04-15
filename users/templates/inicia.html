@@ -1,0 +1,17 @@
+
+<form method="post">
+    {%csrf_token%}
+    <div class="mb-3 form-group">
+        <label for="email">Correo Electronico:</label>
+        {{form.email}}
+    </div>
+    <div class="mb-3 form-group">
+        <label for="password">Password:</label>
+        {{form.password}}
+    </div>
+   
+    <div class="mb-3 form-group">
+        <input type="submit" value="Inicia Sesion" class="btn btn-primary">            
+    </div>
+    
+</form>

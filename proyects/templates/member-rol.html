@@ -1,0 +1,12 @@
+{%extends 'layout.html' %}
+{%block body%}
+<h2>Cambia los roles a tus miembros de tu proyecto</h2>
+{% for miembro in members%}
+    <span>Nombre: {{miembro.first_name}}</span>
+<form method="post">
+    {%csrf_token%}
+    {{form}}
+    <input type="submit" value="Cambiar Roles">
+</form>
+{%endfor%}
+{%endblock%}

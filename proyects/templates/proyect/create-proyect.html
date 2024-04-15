@@ -1,0 +1,33 @@
+{%extends 'layout.html' %}
+
+{%block body%}
+
+<main class="container">
+
+    {% if error %}
+        <span>{{error}}</span>
+     {% endif %}
+    <div class="row mt-5">
+        <div class="col-md-4 offset-md-4">
+            <form method="post" action="{%url 'create-proyect'%}">
+              {%csrf_token%}
+                <div class="mb-3">
+                  <label class="form-label">Nombre del proyecto</label>
+                    {{form.project_name}}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Descripcion del proyecto</label>
+                    {{form.project_description}}
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Objetivo del proyecto</label>
+                    {{form.proyect_objetive}}
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Crear Proyecto</button>
+              </form>
+        </div>
+    </div>
+   
+</main>
+
+{%endblock%}

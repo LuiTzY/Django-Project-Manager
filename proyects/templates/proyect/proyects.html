@@ -1,0 +1,65 @@
+{%extends 'layout.html' %}
+
+{%block body%}
+<h2 class="text-center mb-5">Tus proyectos</h2>
+{% if messages %}
+    {% for message in messages %}
+        {%if message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong> {{ message }} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%else%}
+        <div class="alert alert-danger  alert-dismissible fade show" role="alert">
+            <strong> {{ message }} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {%endif%}
+    {% endfor %}
+    {% endif %}
+{% if proyectos|length >= 1%}
+    <div class="row">
+        {% for proyecto in proyectos %}
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper mt-3">
+                                <div class="widget-49-date-primary">
+                                    <span class="widget-49-date-day">{{ proyecto.created_at|date:"F" }}</span>
+                                    <span class="widget-49-date-month">{{proyecto.created_at.day}}</span>
+                                </div>
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">{{proyecto.project_name}}</span>
+                                    <span class="widget-49-meeting-time" style="color: black;">{{proyecto.project_owner.first_name  }}</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>{{proyecto.project_description}}</span></li>
+                        
+                            </ol>
+                            <div class="widget-49-meeting-action">
+                                <a href="{% url 'proyect' proyecto.id%}" class="btn btn-sm btn-flash-border-primary">Ver Proyecto</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{%else%}
+<div class="alert alert-primary d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+    <div>
+        Actualemte no tienes proyectos creados
+        <a class="btn btn-outline-primary" href="/create-proyect/">Crear proyectos</a>
+    </div>
+  </div>
+{%endif%}
+
+
+
+    
+
+{%endblock%}

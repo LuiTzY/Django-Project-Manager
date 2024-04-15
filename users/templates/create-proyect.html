@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{%block body%}
+    <h1>Bienvenido al gestionador de proyectos {{user.first_name}}</h1>
+    {{mensaje}}
+    {{user}}
+    <p>Usuario en la request {{request.user}}</p>   
+
+
+    <form method="post">
+
+        {%csrf_token%}
+        {{form}}
+        <input type="submit" value="Enviar">
+    </form>
+{%endblock%}

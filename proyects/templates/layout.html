@@ -1,0 +1,131 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/5/sandstone/bootstrap.min.css">
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="{% static '../static/styles/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '../static/styles/proyects.css' %}">
+
+    <title>Gestionador de proyectos</title>
+</head>
+<body>
+    {%if welcome%}
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+        <div class="alert alert-dark alert-dismissible fade show" role="alert">
+            <strong>Hola ¡{{user.first_name}}!</strong>  actualmente tienes una sesion activa.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+    </div>
+    {%endif%}
+
+      <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+
+                    <svg height="32" viewBox="0 0 32 32" width="28" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#FFFFFF" d="m14.859 0h5.234v24.219c-2.682.51-4.656.714-6.797.714-6.385 0-9.714-2.885-9.714-8.427 0-5.333 3.531-8.797 9-8.797.849 0 1.495.068 2.276.271zm0 12.193c-.568-.193-1.167-.286-1.766-.276-2.651 0-4.177 1.63-4.177 4.49 0 2.786 1.458 4.313 4.146 4.313.578 0 1.052-.031 1.797-.135v-8.396zm13.558-4.115v12.13c0 4.177-.302 6.188-1.219 7.917-.849 1.667-1.974 2.719-4.281 3.875l-4.859-2.313c2.307-1.089 3.432-2.036 4.146-3.5.745-1.495.984-3.229.984-7.781v-10.328zm-5.229-8.052h5.229v5.37h-5.229z"/>
+</svg>
+                    <div class="sidebar-logo">
+                    <a href="{% url 'home' %}">Gestionar Proyectos</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="{% url 'profile'%}" class="sidebar-link">
+                       
+                        <i class="bi bi-person-vcard-fill"></i>
+
+                        <span>Mi Perfil</span>
+                    </a>
+                </li>
+               
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                        <i class="bi bi-person-gear"></i>
+                        <span>Proyectos</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="{%url 'proyects' %}" class="sidebar-link">Mis proyectos</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{%url 'create-proyect' %}" class="sidebar-link">Crear proyecto</a>
+                        </li>
+                    </ul>
+                </li>
+               
+                
+                <li class="sidebar-item">
+                    <a href="/proyects-charts-activity/" class="sidebar-link">
+                        <i class="bi bi-journal-text"></i>
+                        <span>Proyectos Estadisitcas</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="{%url 'all-tasks'%}" class="sidebar-link">
+                        <i class="bi bi-journal-text"></i>
+                        <span>Mis tareas</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="{% url 'logout' %}" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="main p-3">
+            <div class="text-center">
+        {%block body%}
+        
+        <div class="container py-4">
+            <h1 class="text-primary">Introducción a la Aplicación de Gestión de Proyectos</h1>
+            <p class="lead">En el entorno actual, la gestión efectiva de proyectos es esencial para el éxito de cualquier empresa o equipo de trabajo. Con el creciente énfasis en la colaboración y la eficiencia, se ha vuelto imprescindible contar con herramientas que faciliten la planificación, seguimiento y coordinación de proyectos, especialmente a menor escala.</p>
+            
+            <h2>Desarrollado con:</h2>
+            <div class="row">
+                <div class="col">
+                  <div class="card-body">
+                    <svg height="126" preserveAspectRatio="xMidYMid" viewBox="0 0 256 326" width="256" xmlns="http://www.w3.org/2000/svg"><g fill="#2ba977"><path d="m114.78426 0h53.277999v244.191113c-27.290404 5.162172-47.381078 7.193079-69.117404 7.193079-65.0718413-.067924-98.944855-29.139102-98.944855-84.972068 0-53.795267 35.9300792-88.7078508 91.6079875-88.7078508 8.6396755 0 15.2222855.6792329 23.1762725 2.7169325zm1.867183 124.426648c-6.239766-2.0377-11.38243-2.716934-17.9650395-2.716934-26.9475597 0-42.5126892 16.437443-42.5126892 45.243722 0 28.045536 14.8794413 43.532053 42.1698442 43.532053 5.8969215 0 10.6967405-.332825 18.3078845-1.351675z"/><path d="m255.186899 84.2605714v122.2619686c0 42.105664-3.154168 62.353604-12.410963 79.809896-8.639675 16.783852-20.022104 27.366305-43.541221 39.055907l-49.438144-23.297697c23.519117-10.928862 34.901547-20.587558 42.169846-35.326917 7.611142-15.072184 10.011052-32.528476 10.011052-78.444637v-104.0585206z"/><path d="m196.608 0h53.277999v54.1348831h-53.277999z"/></g></svg>                   </div>
+                </div>
+                <div class="col">
+                  <div class="card-body">
+                    <svg height="105" preserveAspectRatio="xMidYMid" viewBox="0 0 256 255" width="256" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><linearGradient id="a" x1="12.959359%" x2="79.638833%" y1="12.039393%" y2="78.200854%"><stop offset="0" stop-color="#387eb8"/><stop offset="1" stop-color="#366994"/></linearGradient><linearGradient id="b" x1="19.127525%" x2="90.741533%" y1="20.579181%" y2="88.429037%"><stop offset="0" stop-color="#ffe052"/><stop offset="1" stop-color="#ffc331"/></linearGradient><path d="m126.915866.07227555c-64.8322829.00000462-60.7837372 28.11518925-60.7837372 28.11518925l.0722755 29.1270467h61.8678717v8.7453417h-86.4415589s-41.486166-4.7049094-41.486166 60.7114618c-.00000463 65.416358 36.2100508 63.096556 36.2100508 63.096556h21.6103896v-30.355731s-1.1648552-36.210051 35.6318464-36.210051h61.3619421s34.475438.557297 34.475438-33.3190286v-56.0135516c0-.0000047 5.234323-33.89723325-62.518352-33.89723325zm-34.1140591 19.58667415c6.1553999-.0000045 11.1304351 4.9750349 11.1304351 11.1304348.000004 6.1553999-4.9750352 11.1304348-11.1304351 11.1304348-6.1553999.0000046-11.1304348-4.9750349-11.1304348-11.1304348-.0000047-6.1553999 4.9750349-11.1304348 11.1304348z" fill="url(#a)"/><path d="m128.757101 254.126271c64.832302 0 60.783738-28.11519 60.783738-28.11519l-.072275-29.127046h-61.867872v-8.745342h86.441559s41.486166 4.704896 41.486166-60.711485c.000023-65.4163514-36.210051-63.0965491-36.210051-63.0965491h-21.61039v30.3557243s1.164874 36.2100508-35.631846 36.2100508h-61.361948s-34.475437-.557296-34.475437 33.319052v56.013552s-5.2343225 33.897233 62.518356 33.897233zm34.114059-19.586674c-6.155401 0-11.130434-4.975033-11.130434-11.130435 0-6.155403 4.975033-11.130435 11.130434-11.130435 6.155403 0 11.130435 4.975032 11.130435 11.130435.000023 6.155402-4.975032 11.130435-11.130435 11.130435z" fill="url(#b)"/></svg>
+                  </div>
+                </div>
+              </div>
+              
+            <h2 class="text-dark">Características principales:</h2>
+                <li class="list-group-item"><strong>Creación de proyectos:</strong> Los usuarios pueden crear nuevos proyectos y establecer los detalles fundamentales, como el nombre, la descripción y los objetivos del proyecto.</li>
+                <li class="list-group-item"><strong>Gestión de proyectos:</strong> La aplicación ofrece herramientas para gestionar proyectos de manera efectiva, permitiendo a los usuarios visualizar y actualizar información clave.</li>
+                <li class="list-group-item"><strong>Creación de tareas:</strong> Los usuarios pueden crear y organizar tareas específicas dentro de cada proyecto, estableciendo descripciones, fechas de completado, asignación de estas.</li>
+                <li class="list-group-item"><strong>Asignación de tareas por miembros:</strong> La aplicación facilita la asignación de tareas a los diferentes miembros del equipo, lo que permite una distribución equitativa de la carga de trabajo y una mayor transparencia en la responsabilidad.</li>
+                <li class="list-group-item"><strong>Roles de miembros:</strong> Se pueden establecer roles específicos para cada miembro del equipo, como administrador, miembro lo que define sus privilegios y responsabilidades dentro del proyecto.</li>
+            </ul>
+            
+        </div>
+        {%endblock%}
+        </div>
+            </div>
+            
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js "></script>
+    <script src="{% static '../static/js/index.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://pingendo.com/assets/bootstrap/bootstrap-4.0.0-alpha.6.min.js"></script>
+
+</body>
+
+</html>

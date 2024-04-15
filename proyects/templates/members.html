@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Miembros del proyecto {{ proyect.project_name }}</h1>
+    
+        {%if is_owner%}
+
+            <div class="alert alert-success" role="alert">
+                Nota: Eres el <strong>administrador</strong> del proyecto, puedes eliminar y ver miembros.
+            </div>
+
+        {%elif member_is_admin %}
+
+            <div class="alert alert-success" role="alert">
+                Nota: Eres un miembro <strong>administrador</strong> del proyecto, solo pueder ver miembros.
+            </div>
+
+        {%else%}
+
+            <div class="alert alert-success" role="alert">
+                Nota: Eres un miembro <strong>regular</strong> del proyecto, solo puedes visualizar.
+            </div>
+
+        {%endif%}
+
+<div class="row">
+    {%if members|length == 0%}
+    <div class="container">
+        <div class="w-40">
+            <p class="text-center">Debes de agregar miembros a tu proyecto, actualmente no has agregado a ninguno.</p>
+            <a href="/add-member/{{proyect.id}}/" class="btn btn-primary">Agrega un miembro</a>
+        </div>
+    </div>
+    
+    {%else%}
+    {% for member in members %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                {% if is_owner%}
+
+                    {% if member.is_admin %}
+                        <h5 class="card-title text-primary">Miembro Administrador</h5>
+                        <div class="alert alert-info" role="alert">
+                            Nota: Este miembro es un administrador del proyecto.
+                        </div>
+                    {% else %}
+                        <h5 class="card-title">Miembro Regular</h5>
+                        <div class="alert alert-info" role="alert">
+                        Nota: Este miembro es un miembro regular del proyecto.
+                        </div>
+                    {% endif %}
+                        <p class="card-text">
+                        <a href="{% url 'member-detail' member.proyect.id member.user.id %}">
+                        <strong class="text-black">{{ member.user.first_name }}</strong>
+                        </a>
+                        </p>
+                    <a href="{% url 'member-detail' member.proyect.id member.user.id %}" class="btn btn-primary">Ver miembro</a>
+                    <a href="{% url 'delete-member' member.proyect.id member.user.id %}" class="btn btn-danger">Eliminar Miembro</a>
+
+                {%elif member_is_admin%}
+
+                    {% if member.is_admin %}
+                        <h5 class="card-title text-primary">Miembro Administrador</h5>
+                        <div class="alert alert-info" role="alert">
+                            Nota: Este miembro es un administrador del proyecto.
+                        </div>
+                    {% else %}
+                        <h5 class="card-title">Miembro del proyecto</h5>
+                        <div class="alert alert-info" role="alert">
+                            Nota: Este miembro es un miembro regular del proyecto.
+                        </div>
+                    {% endif %}
+                    <p class="card-text">
+                    <a href="{% url 'member-detail' member.proyect.id member.user.id %}">
+                    <strong class="text-black">{{ member.user.first_name }}</strong>
+                    </a>
+                    </p>
+
+                    <a href="{% url 'member-detail' member.proyect.id member.user.id %}" class="btn btn-primary">Ver miembro</a>
+                {%else%}
+                            
+                    {% if member.is_admin %}
+                            <h5 class="card-title text-primary">Miembro administrador del proyecto</h5>
+                            <div class="alert alert-info" role="alert">
+                                Nota: Este miembro es un administrador del proyecto.
+                            </div>
+                    {% else %}
+                            <h5 class="card-title">Miembro del proyecto</h5>
+                            <div class="alert alert-info" role="alert">
+                                Nota: Este miembro es un miembro regular del proyecto.
+                            </div>
+                    {% endif %}
+                    <p class="card-text">
+                    <a href="{% url 'member-detail' member.proyect.id member.user.id %}">
+                    <strong class="text-black">{{ member.user.first_name }}</strong>
+                    </a>
+                    </p>
+                    <a href="{% url 'member-detail' member.proyect.id member.user.id %}">
+                {%endif%}
+
+                
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {%endif%}
+</div>
+
+{% endblock %}

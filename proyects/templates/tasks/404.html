@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+
+{%block body%}
+    <h2>Actualmente no tienes tareas asignadas</h2>
+    <p>Cuando seas agregado a otro proyecto podras consultar las tareas que te asignen aqui, por el momento no tienes ninguna.</p>
+    <a href="{% url 'proyects' %}" class="btn btn-primary">Mis proyectos</a>
+{%endblock%}
