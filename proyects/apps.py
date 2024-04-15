@@ -4,3 +4,4 @@ from django.apps import AppConfig
 class ProyectsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'proyects'
+    verbose_name = "Gestion de Proyectos"

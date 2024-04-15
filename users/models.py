@@ -47,6 +47,9 @@ class User(AbstractBaseUser):
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('first_name','last_name')
+    class Meta:
+        verbose_name = "Usuario"
+        verbose_name_plural = "Usuarios"
     
      #La forma que se va a imprimir el objeto de tipo usuario
     def __str__(self):

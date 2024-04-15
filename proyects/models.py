@@ -9,7 +9,10 @@ class Proyect(models.Model):
     project_owner = models.ForeignKey(User, verbose_name = "Usuario",editable=False, on_delete = models.CASCADE, related_name="proyectos_creador")
     created_at = models.DateField(auto_now_add=True, verbose_name="Creado el ")
     update_at = models.DateField(auto_now = True, verbose_name = "Actualizado el")
-    
+    class Meta:
+        verbose_name = "Proyecto"
+        verbose_name_plural = "Proyectos"
+        
     def __str__(self):
         return f"{self.project_name} created by {self.project_owner}"
     
@@ -24,7 +27,10 @@ class Member(models.Model):
     proyect = models.ForeignKey(Proyect, on_delete=models.CASCADE, related_name="proyectos_miembros")
     is_admin = models.BooleanField(default=False, verbose_name="Rol de Admin")
     joined_at = models.DateField(auto_now=True, verbose_name="Unido el",blank= True)
-
+    class Meta:
+        verbose_name = "Miembro"
+        verbose_name_plural = "Miembros"
+        
     def __str__(self) :
         return f"{self.user.first_name} - {self.proyect}"
 
@@ -41,7 +47,10 @@ class Task(models.Model):
     asigned_at = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='tareas_asignadas')
     created_at = models.DateField(auto_now_add=True, verbose_name="Creado el ")
     update_at = models.DateField(auto_now = True, verbose_name = "Actualizado el")
-
+    class Meta:
+        verbose_name = "Tarea"
+        verbose_name_plural = "Tareas"
+        
     def save(self, *args, **kwargs):
         print(f"KWARGS {kwargs}")
         print("HOla")
