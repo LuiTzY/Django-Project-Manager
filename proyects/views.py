@@ -78,17 +78,25 @@ def proyects_member(request):
 @login_required
 def getProyect(request,project_id):
     user  = request.user
-    proyect = Proyect.objects.get(project_owner=user, id=project_id)
-    members = Member.objects.filter(proyect = proyect)
-    members_names = [(member.user.first_name) for member in members]
-    completed_tasks = Task.objects.filter(proyect = proyect, completed=True)
+    try:
+        proyect = Proyect.objects.get(project_owner=user, id=project_id)
+        members = Member.objects.filter(proyect = proyect)
+        members_names = [(member.user.first_name) for member in members]
+        completed_tasks = Task.objects.filter(proyect = proyect, completed=True)
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
     ProyectHistorial.objects.create(action=f"{user} ha consultado el proyecto")
     return render(request, "proyect/proyect.html", {"proyect":proyect,"members":members,"tasks":proyect.tareas.all(),"completed_tasks":completed_tasks,"members_names":members_names})
 
 @login_required
 def updateProyect(request, project_id):
-    proyect = Proyect.objects.get(id=project_id)
-    queryset = Member.objects.filter(proyect =project_id, is_admin=True)
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+        queryset = Member.objects.filter(proyect =project_id, is_admin=True)
+        
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
+    
     admin_members = list(queryset)
     email_admin_members = [(member.user.email) for member in admin_members]
     email_admin_members.append(request.user.email)
@@ -116,8 +124,11 @@ def updateProyect(request, project_id):
 
 @login_required
 def createTask(request,project_id):
-   proyect = Proyect.objects.get(id=project_id)
-   members = Member.objects.filter(proyect=proyect)
+   try: 
+    proyect = Proyect.objects.get(id=project_id)
+    members = Member.objects.filter(proyect=proyect)
+   except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
    if proyect is not None:
        if request.method == "GET":
             return render(request, "tasks/create-task.html", {"form":TaskCreateForm(instance=proyect),"proyect":proyect,"members":members})
@@ -157,10 +168,17 @@ def all_tasks(request):
             
 @login_required
 def getTask(request, task_id, project_id):
-    proyect = Proyect.objects.get(id = project_id)
+    try:
+        proyect = Proyect.objects.get(id = project_id)
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
+    
     members = Member.objects.filter(is_admin=True)
     admin_members = [(member.user.id) for member in members]
-    task = Task.objects.get(proyect=proyect, id = task_id)
+    try:
+        task = Task.objects.get(proyect=proyect, id = task_id)
+    except ObjectDoesNotExist:
+        return render(request,"tasks/404-tasks.html")
     if request.user.id in admin_members:
         ProyectHistorial.objects.create(action=f"{request.user.id} consulto la tarea {task.title} en el proyecto {proyect.project_name}")
         return render(request, "tasks/task.html", {"task":task,"admin_members":admin_members,"admin":True})
@@ -181,8 +199,11 @@ def complete_task(request,task_id,project_id):
         
 @login_required
 def getTasks(request, project_id):
-    proyect = Proyect.objects.get(id=project_id)
-    members = Member.objects.filter(proyect=proyect)
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+        members = Member.objects.filter(proyect=proyect)
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
     if proyect is not None:
         tasks = proyect.tareas.all()
         if request.method == "GET":
@@ -194,8 +215,15 @@ def getTasks(request, project_id):
         
 @login_required
 def editTask(request,task_id, project_id):
-    proyect = Proyect.objects.get(id=project_id)
-    task = Task.objects.get(id=task_id)
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
+    try:
+        task = Task.objects.get(id=task_id)
+    except ObjectDoesNotExist:
+        return render(request,"tasks/404-tasks.html")
+    
     if request.method == "GET":
         ProyectHistorial.objects.create(action=f"{request.user.id} solicito editar la tarea {task.title} en el proyecto {proyect.project_name}")
         return render(request, "edit-task.html",{"form":UpdateTaskForm(instance=task)})
@@ -215,8 +243,12 @@ def editTask(request,task_id, project_id):
         
 @login_required        
 def deleteTask(request, task_id):
-    task = Task.objects.get(id=task_id)
-    task.delete()
+    try:
+        task = Task.objects.get(id=task_id)
+        task.delete()
+    except ObjectDoesNotExist:
+        return render(request,"tasks/404-tasks.html")
+    
     ProyectHistorial.objects.create(action=f"{request.user.id} elimino la tarea {task.title} en el proyecto {task.proyect.project_name}")
     messages.success(request, "Se ha eliminado la tarea correctamente")
     return redirect("proyects")
@@ -224,14 +256,21 @@ def deleteTask(request, task_id):
 #Vista de roles 
 @login_required
 def change_member_role(request,project_id):
-    proyect = Proyect.objects.get(id=project_id)
-    project_members = proyect.project_members.all()
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+        project_members = proyect.project_members.all()
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
     ProyectHistorial.objects.create(action=f"{request.user.id} solicito cambiar los roles en el proyecto {proyect.project_name}")
     return render(request,'member-rol.html',{"form":MemberRolForm(),"members":project_members})
 
 @login_required
 def addProyectMember(request, project_id):
-    proyect = Proyect.objects.get(id=project_id)
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
+    
     if request.method == "GET":
         ProyectHistorial.objects.create(action=f"{request.user.id} solicito agregar miembros en el proyecto {proyect.project_name}")
         return render(request, "member/add-members.html", {"form":ProjectMembersForm(instance=proyect)})
@@ -254,8 +293,13 @@ def addProyectMember(request, project_id):
 
 @login_required
 def listAllMembers(request, project_id):
-    proyect = Proyect.objects.get(id=project_id)
-    members = Member.objects.filter(proyect=project_id)
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+        members = Member.objects.filter(proyect=project_id)
+
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
+    
     admin_members =list(Member.objects.filter(proyect=project_id, is_admin=True))
     admin_members_list = [(member.user.id) for member in members]
     ProyectHistorial.objects.create(action=f"{request.user.id} listo todos los miembros del proyecto {proyect.project_name}")
@@ -270,7 +314,11 @@ def listAllMembers(request, project_id):
 
 @login_required
 def member_detail(request, project_id, member_id):
-    proyect = Proyect.objects.get(id=project_id)
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+        
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")    
     #Miembro a mostrar informacion
     try:
         member = Member.objects.get(user_id = member_id, proyect_id = project_id)
@@ -294,29 +342,13 @@ def member_detail(request, project_id, member_id):
     else:
         return render(request, "member/member-detail.html", {"member":member,"member_tasks":",".join(member_tasks_title),"member_is_admin":False})
 
-
-    """  activity_data = {
-            '2022-01-01': 10,
-            '2022-01-02': 15,
-            '2022-01-03': 20,
-            # Agrega más datos aquí
-        }
-
-        # Procesar los datos para crear el gráfico
-    labels = list(activity_data.keys())
-    values = list(activity_data.values())
-
-        # Crear el gráfico con Plotly
-    trace = go.Scatter(x=labels, y=values, mode='lines+markers')
-    layout = go.Layout(title='Gráfico de Actividad', xaxis=dict(title='Fecha'), yaxis=dict(title='Actividad'))
-    fig = go.Figure(data=[trace], layout=layout)
-    plot_div = fig.to_html(full_html=False)"""
-    
-
 @login_required
 def member_change_rol(request, project_id, member_id):
-    member = Member.objects.get(user_id = member_id, proyect_id = project_id)
-    
+    try:
+        member = Member.objects.get(user_id = member_id, proyect_id = project_id)
+        
+    except ObjectDoesNotExist:
+        return render(request, "member/404-members.html",{"message":"Lo sentimos, pero este miembro no existe en tu proyecto"})
     if member.is_admin:
         member.is_admin = False
         member.save()
@@ -332,8 +364,12 @@ def member_change_rol(request, project_id, member_id):
 
 @login_required
 def delete_member(request, project_id, member_id):
-    member = Member.objects.get(user_id = member_id, proyect_id = project_id)
-    member_name = member.user.first_name
+    try:
+        member = Member.objects.get(user_id = member_id, proyect_id = project_id)
+        member_name = member.user.first_name
+    except ObjectDoesNotExist:
+        return render(request, "member/404-members.html",{"message":"Lo sentimos, pero este miembro no existe en tu proyecto"})
+    
     if member is not None:
         member.delete()
         messages.success(request,f"Se ha eliminado correctamente el miembro {member_name} de tu proyecto")
