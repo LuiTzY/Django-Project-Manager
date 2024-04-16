@@ -40,6 +40,7 @@
                             </ol>
                             <div class="widget-49-meeting-action">
                                 <a href="{% url 'proyect' proyecto.id%}" class="btn btn-sm btn-flash-border-primary">Ver Proyecto</a>
+                                <a href="{% url 'delete-proyect' proyecto.id%}" class="btn btn-sm btn-flash-border-primary">Eliminar Proyecto</a>
                             </div>
                         </div>
                     </div>
@@ -49,11 +50,10 @@
         {% endfor %}
     </div>
 {%else%}
-<div class="alert alert-primary d-flex align-items-center" role="alert">
-    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+
     <div>
-        Actualmente no tienes proyectos creados
-        <a class="btn btn-outline-primary" href="/create-proyect/">Crear proyectos</a>
+        <h2 class="mb-3">Actualmente no tienes proyectos creados</h2>
+        <a class="btn btn-outline-primary" href="/create-proyect/">Crea un proyecto </a>
     </div>
   </div>
 {%endif%}

@@ -30,5 +30,5 @@ class MemberAdmin(admin.ModelAdmin):
 
 #se registran estas configuraciones    
 admin.site.register(Proyect,ProyectAdmin)
-admin.site.register(Task,TaskAdmin)
+admin.site.register(Task)
 admin.site.register(Member, MemberAdmin)

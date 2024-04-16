@@ -154,6 +154,16 @@ def updateProyect(request, project_id):
         ProyectHistorial.objects.create(action=f"{request.user.id} consulto el proyecto {proyect.project_name}, pero no posee permisos")
         return redirect('proyect',project_id)
     
+@login_required
+def delete_proyect(request, project_id):
+    try:
+        proyect = Proyect.objects.get(id=project_id)
+        proyect.delete()
+    except ObjectDoesNotExist:
+        return render(request,"proyect/404-proyect.html")
+    else:
+        messages.success(request,"El proyecto se elimino correctamente")
+        return redirect("proyects")
 
 @login_required #vista protegida, cuando se haga una solicitud y no este autenticado, lo redirecciona al login
 #vista para crear una tarea, (parametros) = id del proyecto

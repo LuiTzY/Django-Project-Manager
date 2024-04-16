@@ -8,6 +8,7 @@ urlpatterns = [
     path('proyects-member/', views.proyects_member, name="proyects-member"),
     path('proyect/<project_id>/', views.getProyect, name="proyect"),
     path('update-proyect/<project_id>/', views.updateProyect, name="edit-proyect"),
+    path('delete-project/<project_id>', views.delete_proyect, name="delete-proyect"),
     
     path('create-task/<project_id>/', views.createTask, name="create-task"),
     path('task/<task_id>/<project_id>', views.getTask, name="task"),
