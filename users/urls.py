@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+#urls de las acciones del usuario
 urlpatterns = [
     path("login/" , views.singup, name="login"),
     path("singin/", views.singin, name="singin"),

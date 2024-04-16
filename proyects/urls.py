@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+#Rutas de los proyectos,tareas y miembros para realizar las acciones
 urlpatterns = [
     path('create-proyect/', views.register_proyect, name="create-proyect"),
     path('proyects/', views.getProyects, name="proyects"),

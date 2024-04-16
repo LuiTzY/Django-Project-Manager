@@ -3,11 +3,11 @@ from .models import User
 from .forms import UserForm, AunthenticaUser, UpdateAccountForm
 from django.db import IntegrityError
 from django.contrib.auth import login,authenticate,logout
-from django.shortcuts import get_object_or_404,get_list_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from proyects.models import Proyect,Member
 
+#vista principal de la app
 def home(request):
     return render(request,'layout.html')
 
@@ -76,30 +76,35 @@ def signout(request):
 
 @login_required
 def profile(request):
+    #si obtiene el usuario
     user = User.objects.get(id=request.user.id)
+    #se obtienen los proyectos del usuario
     proyects = Proyect.objects.filter(project_owner__id=user.id)
+    #se obtienen los proyectos en los que el usuario ha sido agregado
     user_external_proyects = Member.objects.filter(user__id=user.id)
-    print(user_external_proyects) 
     if  user is not None:
-        """if proyects is None and user_external_proyects is not None:
-            return render(request, "profile.html",{"proyects":proyects,"proyect_members":user_external_proyects})
-        elif proyects is not None and user_external_proyects is None:
-            return render(request,"profile.html",{"proyects":proyects})
-        elif proyects is None and user_external_proyects is not None:
-            return render(request, "profile.html",{"proyect_members":user_external_proyects})"""
+        #si el usuario es valido, se redirecciona al perfil
         return render(request, "profile.html",{"proyects":proyects,"proyect_members":user_external_proyects})
 
 @login_required
 def editAccount(request):
+    #si es por get la solicitud
     if request.method == "GET":
+        #se renderiza el formulario
         return render(request, "edit.html", {"form":UpdateAccountForm()})
     else:
+        #se actualiza el usuario, pasando la instancia del usuario en la solicitud
         updateForm = UpdateAccountForm(data=request.POST,instance=request.user)
+        #si es valido
         if updateForm.is_valid():
+            #se guarda
             updateForm.save()
+            #se crea un mensaje de exito
             messages.success(request, '¡Tu cuenta ha sido actualizada correctamente!')  
+            #se redireccion a el perfil
             return redirect("profile")
         else:
+            #se crea un error
             messages.error(request, 'Hubo un error al actualizar tu cuenta, Por favor vuelva a intentarlo.')
 
 @login_required
